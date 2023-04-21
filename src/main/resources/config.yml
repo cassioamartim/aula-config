@@ -1,0 +1,7 @@
+nome: 'aaa'
+numero: 12
+numeroDouble: 13.5
+lista:
+  - 'ABC'
+  - 'DEF'
+  - 'FGH'
