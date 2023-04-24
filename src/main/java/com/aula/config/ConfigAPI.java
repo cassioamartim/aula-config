@@ -17,20 +17,14 @@ public class ConfigAPI {
     private final File yamlConfig;
 
     public ConfigAPI(String configName, File directory) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(configName).append(".yml");
-
-        this.configName = builder.toString();
-
-        System.out.println(directory);
+        this.configName = configName + ".yml";
 
         this.directory = directory;
 
         this.yamlConfig = new File(directory + "/" + this.configName);
 
         if (!directory.exists()) {
-            directory.mkdir();
+            directory.mkdirs();
         }
 
         if (!yamlConfig.exists()) {
@@ -43,12 +37,34 @@ public class ConfigAPI {
 
         this.config = YamlConfiguration.loadConfiguration(yamlConfig);
 
-        this.config.addDefault("cassio.kills", 10);
-        this.config.addDefault("cassio.livro", "Bartolomeu");
+        File newDirectory = new File(directory, "jogadores");
 
-        this.config.options().copyDefaults(true);
+        if (!newDirectory.exists()) {
+            newDirectory.mkdirs();
+        }
 
-        save();
+        File jogadores = new File(newDirectory, "jogadores.yml");
+
+        if (!jogadores.exists()) {
+            try {
+                jogadores.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        FileConfiguration jogadorConfig = YamlConfiguration.loadConfiguration(jogadores);
+
+        jogadorConfig.set("jogador.Cassio.nome", "Cassio");
+        jogadorConfig.set("jogador.Cassio.idade", 17);
+
+        try {
+            jogadorConfig.save(jogadores);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Sucesso!");
     }
 
     public String getString(String path) {

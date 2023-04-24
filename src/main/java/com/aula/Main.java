@@ -9,10 +9,6 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
 
-        ConfigAPI configAPI = new ConfigAPI("status", getDataFolder());
-
-        System.out.println(configAPI.getInt("cassio.kills"));
-        System.out.println(configAPI.getString("cassio.livro"));
-
+        new ConfigAPI("status", getDataFolder());
     }
 }
